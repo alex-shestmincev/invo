@@ -33,7 +33,8 @@ class NotFoundPlugin extends Plugin
 					return false;
 			}
 		}
-
+        print_r($exception->getMessage()."<br>");
+        print_r($exception->getTraceAsString());
 		$dispatcher->forward(array(
 			'controller' => 'errors',
 			'action'     => 'show500'
