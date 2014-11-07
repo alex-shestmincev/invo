@@ -43,6 +43,7 @@
 
         <div class="clearfix center">
             {{ link_to('register', 'Sign Up', 'class': 'btn btn-primary btn-large btn-success') }}
+            or you {{ link_to('register/remember','Forgot password?') }}
         </div>
     </div>
 

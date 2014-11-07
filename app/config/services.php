@@ -38,6 +38,8 @@ $di->set('dispatcher', function() use ($di) {
 	return $dispatcher;
 });
 
+$di->setShared('config', $config);
+
 /**
  * The URL component is used to generate all kind of urls in the application
  */
@@ -65,6 +67,20 @@ $di->set('view', function() use ($config) {
  * Setting up volt
  */
 $di->set('volt', function($view, $di) {
+
+	$volt = new VoltEngine($view, $di);
+
+	$volt->setOptions(array(
+		"compiledPath" => APP_PATH . "cache/volt/"
+	));
+
+	$compiler = $volt->getCompiler();
+	$compiler->addFunction('is_a', 'is_a');
+
+	return $volt;
+}, true);
+
+$di->set('simple_volt', function($view, $di) {
 
 	$volt = new VoltEngine($view, $di);
 
@@ -124,3 +140,8 @@ $di->set('flash', function(){
 $di->set('elements', function(){
 	return new Elements();
 });
+
+$di->set('mail', function(){
+        return new Mail();
+});
+

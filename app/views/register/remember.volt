@@ -2,34 +2,12 @@
 {{ content() }}
 
 <div class="page-header">
-    <h2>Register for INVO</h2>
+    <h2>Remember password</h2>
 </div>
 
-{{ form('register', 'id': 'registerForm', 'onbeforesubmit': 'return false') }}
+{{ form('register/remember', 'id': 'registerForm', 'onbeforesubmit': 'return false') }}
 
     <fieldset>
-
-        <div class="control-group">
-            {{ form.label('name', ['class': 'control-label']) }}
-            <div class="controls">
-                {{ form.render('name', ['class': 'form-control']) }}
-                <p class="help-block">(required)</p>
-                <div class="alert alert-warning" id="name_alert">
-                    <strong>Warning!</strong> Please enter your full name
-                </div>
-            </div>
-        </div>
-
-        <div class="control-group">
-            {{ form.label('username', ['class': 'control-label']) }}
-            <div class="controls">
-                {{ form.render('username', ['class': 'form-control']) }}
-                <p class="help-block">(required)</p>
-                <div class="alert alert-warning" id="username_alert">
-                    <strong>Warning!</strong> Please enter your desired user name
-                </div>
-            </div>
-        </div>
 
         <div class="control-group">
             {{ form.label('email', ['class': 'control-label']) }}
@@ -65,7 +43,7 @@
         <br/>
         <hr/>
         <div class="form-actions">
-            {{ submit_button('Register', 'class': 'btn btn-primary', 'onclick': 'return SignUp.validate();') }}
+            {{ submit_button('Update', 'class': 'btn btn-primary', 'onclick': 'return SignUp.validate();') }}
             <p class="help-block">By signing up, you accept terms of use and privacy policy.</p>
         </div>
 

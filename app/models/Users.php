@@ -4,8 +4,56 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Validator\Email as EmailValidator;
 use Phalcon\Mvc\Model\Validator\Uniqueness as UniquenessValidator;
 
-class Users extends Model
+class Users extends \Phalcon\Mvc\Model
 {
+
+    /**
+     *
+     * @var integer
+     */
+    public $id;
+
+    /**
+     *
+     * @var string
+     */
+    public $username;
+
+    /**
+     *
+     * @var string
+     */
+    public $password;
+
+    /**
+     *
+     * @var string
+     */
+    public $new_password;
+
+    /**
+     *
+     * @var string
+     */
+    public $name;
+
+    /**
+     *
+     * @var string
+     */
+    public $email;
+
+    /**
+     *
+     * @var string
+     */
+    public $created_at;
+
+    /**
+     *
+     * @var string
+     */
+    public $active;
     public function validation()
     {
         $this->validate(new EmailValidator(array(
@@ -23,4 +71,22 @@ class Users extends Model
             return false;
         }
     }
+
+    /**
+     * Independent Column Mapping.
+     */
+    public function columnMap()
+    {
+        return array(
+            'id' => 'id', 
+            'username' => 'username', 
+            'password' => 'password', 
+            'new_password' => 'new_password', 
+            'name' => 'name', 
+            'email' => 'email', 
+            'created_at' => 'created_at', 
+            'active' => 'active'
+        );
+    }
+
 }
