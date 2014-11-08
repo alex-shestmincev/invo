@@ -13,5 +13,6 @@
         {{ javascript_include('js/jquery.min.js') }}
         {{ javascript_include('js/bootstrap.min.js') }}
         {{ javascript_include('js/utils.js') }}
+        {{ javascript_include('js/main.js') }}
     </body>
 </html>

@@ -39,7 +39,8 @@ class RegisterController extends ControllerBase
             $user->name = $name;
             $user->email = $email;
             $user->created_at = new Phalcon\Db\RawValue('now()');
-            $user->active = 'N';
+            $user->active = Users::ACTIVATE_NO;
+            $user->level = Users::LEVEL_GUESTS;
             if ($user->save() == false) {
                 foreach ($user->getMessages() as $message) {
                     $this->flash->error((string) $message);
@@ -66,7 +67,8 @@ class RegisterController extends ControllerBase
         if (isset($user->email) && isset($user->created_at)){
             $userhash = $this->getHash($user->email, $user->password);
             if ($userhash == $hash){
-                $user->active = 'Y';
+                $user->active = Users::ACTIVATE_YES;
+                $user->level = Users::LEVEL_USERS;
                 
                 if ($user->save() == false) {
                     foreach ($user->getMessages() as $message) {
@@ -109,6 +111,7 @@ class RegisterController extends ControllerBase
             
             if ($user){
                 $user->new_password = sha1($password);
+                
                 if ($user->save() == false) {
                     foreach ($user->getMessages() as $message) {
                         $this->flash->error((string) $message);
@@ -136,8 +139,9 @@ class RegisterController extends ControllerBase
         if (isset($user->email) && isset($user->created_at)){
             $userhash = $this->getHash($user->email, $user->password);
             if ($userhash == $hash){
-                $user->active = 'Y';
+                $user->active = Users::ACTIVATE_YES;
                 $user->password = $user->new_password;
+                $user->level = $user->level ? : Users::LEVEL_USERS;
                 
                 if ($user->save() == false) {
                     foreach ($user->getMessages() as $message) {

@@ -74,17 +74,16 @@ class SecurityPlugin extends Plugin
                     'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
                     'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
                     'invoices'     => array('index', 'profile'),
-                    'bikes'        => array('index'),
                 ),
                 
                 //Manager area resources
                 Users::LEVEL_MANAGERS => array(
-                    
+                    'bikes'        => array('index'),
                 ),
                 
                 //Admin area resources
                 Users::LEVEL_ADMINS => array(
-                    'user'       => array('index'),
+                    'user'       => array('index','edit','save'/*,'delete'*/),
                 ),
                 
             );
@@ -147,15 +146,16 @@ class SecurityPlugin extends Plugin
     
     public function getUserRole(){
         $auth = $this->session->get('auth');
+        $userLevelOptions = Users::userLevelOptions(); 
         
 		if (!$auth || !isset($auth['level']) || $auth['level'] == Users::LEVEL_GUESTS){
-			$role = 'Guests';
+			$role = $userLevelOptions[Users::LEVEL_GUESTS];
 		} elseif ( $auth['level'] == Users::LEVEL_USERS) {
-			$role = 'Users';
+			$role = $userLevelOptions[Users::LEVEL_USERS];
 		} elseif ( $auth['level'] == Users::LEVEL_MANAGERS) {
-			$role = 'Managers';
+			$role = $userLevelOptions[Users::LEVEL_MANAGERS];
 		} elseif ( $auth['level'] == Users::LEVEL_ADMINS) {
-			$role = 'Admins';
+			$role = $userLevelOptions[Users::LEVEL_ADMINS];
         }
         
         return $role;

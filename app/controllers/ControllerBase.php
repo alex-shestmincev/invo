@@ -23,4 +23,14 @@ class ControllerBase extends Controller
     		)
     	);
     }
+    
+    protected function clearEmptyData($data, $emptyValue){
+        foreach($data as $key => $value){
+            if ($value == $emptyValue ){
+                unset($data[$key]);
+            }
+        }
+        return $data;
+    }
+    
 }

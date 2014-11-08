@@ -55,12 +55,39 @@ class Users extends \Phalcon\Mvc\Model
      */
     public $active;
     
+    /**
+     *
+     * @var integer
+     */
     public $level;
     
-    const LEVEL_GUESTS = 0;
-    const LEVEL_USERS = 1;
-    const LEVEL_MANAGERS = 2;
-    const LEVEL_ADMINS = 3;
+    const LEVEL_GUESTS = 1;
+    const LEVEL_USERS = 2;
+    const LEVEL_MANAGERS = 3;
+    const LEVEL_ADMINS = 4;
+    
+    const ACTIVATE_YES = 'Y';
+    const ACTIVATE_NO = 'N';
+    
+    static function userLevelOptions(){
+        $options = array(
+            self::LEVEL_GUESTS => 'Guests',
+            self::LEVEL_USERS => 'Users',
+            self::LEVEL_MANAGERS => 'Managers',
+            self::LEVEL_ADMINS => 'Admins',
+        );
+        
+        return $options;
+    }
+    
+    static function userActivateOptions(){
+        $options = array(
+            self::ACTIVATE_YES => 'Active',
+            self::ACTIVATE_NO => 'Disable',
+        );
+        
+        return $options;
+    }
     
     public function validation()
     {
