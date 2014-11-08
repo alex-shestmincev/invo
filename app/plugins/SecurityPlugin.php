@@ -15,7 +15,20 @@ use Phalcon\Acl\Adapter\Memory as AclList;
  */
 class SecurityPlugin extends Plugin
 {
-
+    static $instance;
+    
+    private function  __construct(){
+        
+    }
+    
+    public static function getInstance(){
+        if (self::$instance == false){
+            self::$instance = new SecurityPlugin();
+        }
+        
+        return self::$instance;
+    }
+    
 	/**
 	 * Returns an existing or new access control list
 	 *
@@ -115,17 +128,7 @@ class SecurityPlugin extends Plugin
 	public function beforeDispatch(Event $event, Dispatcher $dispatcher)
 	{
 
-		$auth = $this->session->get('auth');
-        
-		if (!$auth || !isset($auth['level']) || $auth['level'] == Users::LEVEL_GUESTS){
-			$role = 'Guests';
-		} elseif ( $auth['level'] == Users::LEVEL_USERS) {
-			$role = 'Users';
-		} elseif ( $auth['level'] == Users::LEVEL_MANAGERS) {
-			$role = 'Managers';
-		} elseif ( $auth['level'] == Users::LEVEL_ADMINS) {
-			$role = 'Admins';
-        }
+		$role = $this->getUserRole();
         
 		$controller = $dispatcher->getControllerName();
 		$action = $dispatcher->getActionName();
@@ -141,4 +144,20 @@ class SecurityPlugin extends Plugin
 			return false;
 		}
 	}
+    
+    public function getUserRole(){
+        $auth = $this->session->get('auth');
+        
+		if (!$auth || !isset($auth['level']) || $auth['level'] == Users::LEVEL_GUESTS){
+			$role = 'Guests';
+		} elseif ( $auth['level'] == Users::LEVEL_USERS) {
+			$role = 'Users';
+		} elseif ( $auth['level'] == Users::LEVEL_MANAGERS) {
+			$role = 'Managers';
+		} elseif ( $auth['level'] == Users::LEVEL_ADMINS) {
+			$role = 'Admins';
+        }
+        
+        return $role;
+    }
 }

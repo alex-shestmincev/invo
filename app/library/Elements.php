@@ -117,16 +117,22 @@ class Elements extends Component
      */
     public function getTabs()
     {
+        $security = SecurityPlugin::getInstance();
+        $acl = $security->getAcl();
+        $role = $security->getUserRole();
+        
         $controllerName = $this->view->getControllerName();
         $actionName = $this->view->getActionName();
         echo '<ul class="nav nav-tabs">';
         foreach ($this->_tabs as $caption => $option) {
-            if ($option['controller'] == $controllerName && ($option['action'] == $actionName || $option['any'])) {
-                echo '<li class="active">';
-            } else {
-                echo '<li>';
+            if ($acl->isAllowed($role, $option['controller'], $option['action'])){
+                if ($option['controller'] == $controllerName && ($option['action'] == $actionName || $option['any'])) {
+                    echo '<li class="active">';
+                } else {
+                    echo '<li>';
+                }
+                echo $this->tag->linkTo($option['controller'] . '/' . $option['action'], $caption), '<li>';
             }
-            echo $this->tag->linkTo($option['controller'] . '/' . $option['action'], $caption), '<li>';
         }
         echo '</ul>';
     }
