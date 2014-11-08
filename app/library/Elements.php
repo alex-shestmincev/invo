@@ -62,7 +62,17 @@ class Elements extends Component
             'controller' => 'invoices',
             'action' => 'profile',
             'any' => false
-        )
+        ),
+        'Bikes' => array(
+            'controller' => 'bikes',
+            'action' => 'index',
+            'any' => false
+        ),
+        'Users' => array(
+            'controller' => 'user',
+            'action' => 'index',
+            'any' => false
+        ),
     );
 
     /**

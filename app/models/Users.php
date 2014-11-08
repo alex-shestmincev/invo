@@ -54,6 +54,14 @@ class Users extends \Phalcon\Mvc\Model
      * @var string
      */
     public $active;
+    
+    public $level;
+    
+    const LEVEL_GUESTS = 0;
+    const LEVEL_USERS = 1;
+    const LEVEL_MANAGERS = 2;
+    const LEVEL_ADMINS = 3;
+    
     public function validation()
     {
         $this->validate(new EmailValidator(array(
@@ -85,7 +93,8 @@ class Users extends \Phalcon\Mvc\Model
             'name' => 'name', 
             'email' => 'email', 
             'created_at' => 'created_at', 
-            'active' => 'active'
+            'active' => 'active',
+            'level' => 'level'
         );
     }
 

@@ -34,51 +34,71 @@ class SecurityPlugin extends Plugin
 
 			//Register roles
 			$roles = array(
-				'users'  => new Role('Users'),
-				'guests' => new Role('Guests')
+                Users::LEVEL_GUESTS => new Role('Guests'),
+				Users::LEVEL_USERS  => new Role('Users'),
+				Users::LEVEL_MANAGERS  => new Role('Managers'),
+                Users::LEVEL_ADMINS    => new Role('Admins'),
 			);
 			foreach ($roles as $role) {
 				$acl->addRole($role);
 			}
-
-			//Private area resources
-			$privateResources = array(
-				'companies'    => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-				'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-				'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-				'invoices'     => array('index', 'profile')
-			);
-			foreach ($privateResources as $resource => $actions) {
-				$acl->addResource(new Resource($resource), $actions);
-			}
-
-			//Public area resources
-			$publicResources = array(
-				'index'      => array('index'),
-				'about'      => array('index'),
-				'register'   => array('index'),
-				'errors'     => array('show404', 'show500'),
-				'session'    => array('index', 'register', 'start', 'end'),
-				'contact'    => array('index', 'send')
-			);
-			foreach ($publicResources as $resource => $actions) {
-				$acl->addResource(new Resource($resource), $actions);
-			}
-
-			//Grant access to public areas to both users and guests
-			foreach ($roles as $role) {
-				foreach ($publicResources as $resource => $actions) {
-					$acl->allow($role->getName(), $resource, '*');
+            
+            $Resources = array(
+                
+                // Guest(Public) area resources
+                Users::LEVEL_GUESTS => array(
+                    'index'      => array('index'),
+                    'about'      => array('index'),
+                    'register'   => array('index'),
+                    'errors'     => array('show404', 'show500'),
+                    'session'    => array('index', 'register', 'start', 'end'),
+                    'contact'    => array('index', 'send'),
+                ),
+                
+                //User area resources
+                Users::LEVEL_USERS => array(
+                    'companies'    => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
+                    'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
+                    'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
+                    'invoices'     => array('index', 'profile'),
+                    'bikes'        => array('index'),
+                ),
+                
+                //Manager area resources
+                Users::LEVEL_MANAGERS => array(
+                    
+                ),
+                
+                //Admin area resources
+                Users::LEVEL_ADMINS => array(
+                    'user'       => array('index'),
+                ),
+                
+            );
+            
+            // Add resources
+            foreach($Resources as $level => $_resources){
+                foreach ($_resources as $resource => $actions) {
+                    $acl->addResource(new Resource($resource), $actions);
+                }
+            }
+            
+            foreach ($roles as $role_level=>$role) {
+				foreach ($Resources as $resource_level => $values) { 
+                    if ($role_level >= $resource_level){
+                        foreach ($values as $resource => $actions) {
+                            if ($resource_level == Users::LEVEL_GUESTS){
+                                $acl->allow($role->getName(), $resource, '*');
+                            }else{
+                                foreach ($actions as $action){ //echo $role->getName() . " ".$resource." ".$action."<br>";
+                                    $acl->allow($role->getName(), $resource, $action);
+                                }
+                            }
+                       }
+                    }
 				}
 			}
-
-			//Grant acess to private area to role Users
-			foreach ($privateResources as $resource => $actions) {
-				foreach ($actions as $action){
-					$acl->allow('Users', $resource, $action);
-				}
-			}
-
+            
 			//The acl is stored in session, APC would be useful here too
 			$this->persistent->acl = $acl;
 		}
@@ -96,17 +116,22 @@ class SecurityPlugin extends Plugin
 	{
 
 		$auth = $this->session->get('auth');
-		if (!$auth){
+        
+		if (!$auth || !isset($auth['level']) || $auth['level'] == Users::LEVEL_GUESTS){
 			$role = 'Guests';
-		} else {
+		} elseif ( $auth['level'] == Users::LEVEL_USERS) {
 			$role = 'Users';
-		}
-
+		} elseif ( $auth['level'] == Users::LEVEL_MANAGERS) {
+			$role = 'Managers';
+		} elseif ( $auth['level'] == Users::LEVEL_ADMINS) {
+			$role = 'Admins';
+        }
+        
 		$controller = $dispatcher->getControllerName();
 		$action = $dispatcher->getActionName();
 
 		$acl = $this->getAcl();
-
+        //echo "<pre>";print_r($acl);echo "</pre>";
 		$allowed = $acl->isAllowed($role, $controller, $action);
 		if ($allowed != Acl::ALLOW) {
 			$dispatcher->forward(array(
