@@ -79,6 +79,7 @@ class SecurityPlugin extends Plugin
                 //Manager area resources
                 Users::LEVEL_MANAGERS => array(
                     'bikes'        => array('index','edit','new','save','create','delete'),
+                    'images'       => array('load','delete'),
                 ),
                 
                 //Admin area resources

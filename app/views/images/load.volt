@@ -1,0 +1,1 @@
+{{ link_to(big_image, image(min_image)) }}

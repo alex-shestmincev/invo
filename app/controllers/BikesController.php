@@ -51,8 +51,17 @@ class BikesController extends ControllerBase
 				$this->flash->error("Bike was not found");
 				return $this->forward("bikes/index");
 			}
-
+            
+            $images = Images::find(array(
+                "type = '". ImagesController::TYPE_BIKES ."'",
+                "type_id = '". $Id ."'",
+                "order" => "id",
+                "limit" => 100
+            ));
+            
+            $this->view->bike = $bike;
 			$this->view->form = new BikesEditForm($bike, array('edit' => true));
+            $this->view->images = $images;
 		}
     }
     
