@@ -15,5 +15,30 @@ $(document).ready(function(){
             $('#photoimg').val('');
         },2000);
     });
+    
+    
+    
+
 });
+
+function deleteimg(id){
+    
+    $.ajax({
+        type: 'POST',
+        url: domain + "images/delete",
+        data: {id:id},
+        //crossDomain: true,
+        dataType: 'json',
+        success: function(data){
+            //console.log(data);
+            if(data.status == 1){ 
+                $("#edit_image_" + id).remove();
+            }else{
+                alert(data.error);
+            }
+        }
+        
+    });
+}
+    
 

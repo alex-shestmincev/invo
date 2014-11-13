@@ -82,10 +82,36 @@ class ImagesController extends \Phalcon\Mvc\Controller
             View::LEVEL_MAIN_LAYOUT => true
         ));
         
-        $this->view->min_image = $min_path;
-        $this->view->big_image = $big_path;
+        $this->view->image = $model;
         
     }
-
+    
+    public function deleteAction(){
+        $imageID = (int) $this->request->getPost('id');
+        
+        $image = Images::findFirstById($imageID);
+        
+        $status = 0;
+        $error_message = '';
+        
+        if ($image){
+            if ($image->delete()){
+                $status = 1;
+            }else{
+                $error_message = 'Error while deleting';
+            }
+        }else{
+            $error_message = "Can\'t find image";
+        }
+        
+        $data = array('status' => $status, 'error' => $error_message);
+        
+        echo json_encode($data);
+        
+        $this->view->disableLevel(array(
+            View::LEVEL_LAYOUT => true,
+            View::LEVEL_MAIN_LAYOUT => true
+        ));
+    }
 }
 

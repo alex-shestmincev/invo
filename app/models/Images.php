@@ -33,6 +33,12 @@ class Images extends \Phalcon\Mvc\Model
      */
     public $link_big;
     
+    
+    public function initialize()
+    {
+        $this->belongsTo("type_id", "Bikes", "id");
+        
+    }
 
     /**
      * Independent Column Mapping.

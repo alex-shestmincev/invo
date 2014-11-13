@@ -24,7 +24,11 @@
     <tbody>
     {% endif %}
         <tr>
-            <td>{{ bikes.id }}</td>
+            <td>
+            {% if images[bikes.id] is defined %}
+                {{ image(images[bikes.id])  }}
+            {% endif %}
+            </td>
             <td>{{ bikes.title }}</td>
             <td>{{ bikes.description }}</td>
             <td>{{ bikes.distance }}</td>

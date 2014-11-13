@@ -24,7 +24,16 @@ class BikesController extends ControllerBase
 		}
         
         $bikes = Bikes::find();
-		
+        
+       
+        $images = array();
+        
+        foreach ($bikes as $key => $bike){
+            if ($bike->images->toArray()){
+                $images[$bike->id] = $bike->images->getFirst()->link_min;
+            }
+        }
+        
         $paginator = new Paginator(array(
 			"data"  => $bikes,
 			"limit" => 10,
@@ -33,6 +42,8 @@ class BikesController extends ControllerBase
 
 		$this->view->page = $paginator->getPaginate();
 		$this->view->bikes = $bikes;
+        $this->view->images = $images;
+        
     }
     
     public function newAction(){
@@ -52,16 +63,9 @@ class BikesController extends ControllerBase
 				return $this->forward("bikes/index");
 			}
             
-            $images = Images::find(array(
-                "type = '". ImagesController::TYPE_BIKES ."'",
-                "type_id = '". $Id ."'",
-                "order" => "id",
-                "limit" => 100
-            ));
-            
             $this->view->bike = $bike;
 			$this->view->form = new BikesEditForm($bike, array('edit' => true));
-            $this->view->images = $images;
+            $this->view->images = $bike->images;
 		}
     }
     

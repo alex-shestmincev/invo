@@ -26,7 +26,14 @@ class Bikes extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $distance;
-
+    
+    public $first_image_link;
+    
+    public function initialize()
+    {
+        $this->hasMany("id", "Images", "type_id");
+    }
+    
     /**
      * Independent Column Mapping.
      */

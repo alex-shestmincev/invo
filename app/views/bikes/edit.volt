@@ -50,7 +50,7 @@
 </form>	
 <div id="preview" class="fL">
     {% for image in images %}
-        {{ link_to(image.link_big, image(image.link_min)) }}
+        {{ partial("images/load") }}
     {% endfor %}
 </div>
 <div id="preview1" class="fL"></div>
