@@ -12,6 +12,8 @@
 
     {{ content() }}
 
+    {{ link_to(image.link_big, image(image.link_min)) }} 
+
     <h2>Edit track</h2>
 
     <fieldset>

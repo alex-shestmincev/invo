@@ -18,6 +18,7 @@
             <th>Bike</th>
             <th>Title</th>
             <th>Distance</th>
+            <th>User</th>
             <th colspan="2">Action</th>
         </tr>
     </thead>
@@ -28,6 +29,7 @@
             <td>{{ tracks.bike_id }}</td>
             <td>{{ tracks.title }}</td>
             <td>{{ tracks.distance }}</td>
+            <td>{{ tracks.user_id }}</td>
             <td width="7%">{{ link_to("tracks/edit/" ~ tracks.id, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
             <td width="7%">{{ link_to("tracks/delete/" ~ tracks.id, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-default") }}</td>
         </tr>

@@ -42,6 +42,10 @@ class TracksController extends ControllerBase
 				return $this->forward("track/index");
 			}
             
+            $bike = $track->bikes;
+            $image = $bike->images->toArray() ? $bike->images->getFirst() : false;
+            
+            $this->view->image = $image;
             $this->view->track = $track;
 			$this->view->form = new TracksEditForm($track, array('edit' => true));
             
