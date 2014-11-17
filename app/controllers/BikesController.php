@@ -90,7 +90,7 @@ class BikesController extends ControllerBase
         }
 
         if ($bikes->save() == false) {
-            foreach ($product->getMessages() as $message) {
+            foreach ($bikes->getMessages() as $message) {
                 $this->flash->error($message);
             }
             return $this->forward('bikes/new');

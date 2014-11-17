@@ -32,6 +32,7 @@ class Bikes extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->hasMany("id", "Images", "type_id");
+        $this->hasMany("id", "Tracks", "bike_id");
     }
     
     /**

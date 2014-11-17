@@ -68,6 +68,11 @@ class Elements extends Component
             'action' => 'index',
             'any' => false
         ),
+        'Tracks' => array(
+            'controller' => 'tracks',
+            'action' => 'index',
+            'any' => false
+        ),
         'Users' => array(
             'controller' => 'user',
             'action' => 'index',

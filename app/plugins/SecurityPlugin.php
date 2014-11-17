@@ -80,6 +80,7 @@ class SecurityPlugin extends Plugin
                 Users::LEVEL_MANAGERS => array(
                     'bikes'        => array('index','edit','new','save','create','delete'),
                     'images'       => array('load','delete'),
+                    'tracks'       => array('index','edit','new','save','create','delete'),
                 ),
                 
                 //Admin area resources
