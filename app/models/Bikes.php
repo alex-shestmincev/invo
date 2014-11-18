@@ -14,6 +14,12 @@ class Bikes extends \Phalcon\Mvc\Model
      * @var string
      */
     public $title;
+    
+    /**
+     *
+     * @var string
+     */
+    public $key;
 
     /**
      *
@@ -43,6 +49,7 @@ class Bikes extends \Phalcon\Mvc\Model
         return array(
             'id' => 'id', 
             'title' => 'title', 
+            'key'   => 'key',
             'description' => 'description', 
             'distance' => 'distance'
         );

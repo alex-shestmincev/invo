@@ -14,22 +14,31 @@
 <table class="table table-bordered table-striped" align="center">
     <thead>
         <tr>
-            <th>Time</th>
             <th>Bike</th>
             <th>Title</th>
             <th>Distance</th>
             <th>User</th>
+            <th>Date start</th>
+            <th>Date finish</th>
             <th colspan="2">Action</th>
         </tr>
     </thead>
     <tbody>
     {% endif %}
         <tr>
-            <td>{{ tracks.datestart }}</td>
+            
             <td>{{ tracks.bike_id }}</td>
             <td>{{ tracks.title }}</td>
             <td>{{ tracks.distance }}</td>
             <td>{{ tracks.user_id }}</td>
+            <td>{{ tracks.datestart }}</td>
+            <td>
+                {% if tracks.dateend %}
+                    {{ tracks.dateend}}
+                {% else %}
+                    {{ link_to("tracks/finish/" ~ tracks.id, "Finish") }}
+                {% endif %}
+            </td>
             <td width="7%">{{ link_to("tracks/edit/" ~ tracks.id, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
             <td width="7%">{{ link_to("tracks/delete/" ~ tracks.id, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-default") }}</td>
         </tr>

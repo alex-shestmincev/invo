@@ -14,13 +14,15 @@ class TracksController extends ControllerBase
 			$numberPage = $this->request->getQuery("page", "int");
 		}
         
-        $tracks = Tracks::find();
+        $tracks = Tracks::find(array(
+            "order" => "datestart DESC",
+        ));
         
                
         $paginator = new Paginator(array(
 			"data"  => $tracks,
 			"limit" => 10,
-			"page"  => $numberPage
+            "page"  => $numberPage
 		));
 
 		$this->view->page = $paginator->getPaginate();
@@ -65,7 +67,7 @@ class TracksController extends ControllerBase
         $tracks = new Tracks();
         
         $tracks -> datestart = time();
-        $tracks -> dateend = time();
+        $tracks -> dateend = 0;
 
         $data = $this->request->getPost();
         if (!$form->isValid($data, $tracks)) {
@@ -132,6 +134,74 @@ class TracksController extends ControllerBase
 
 		$this->flash->success("Track was updated successfully");
 		return $this->forward("tracks/index");
+	}
+    
+    public function finishAction($Id){
+        
+        $Id = (int) $Id;
+        $track = Tracks::findFirstById($Id);
+        
+        $track->dateend = time();
+        $key = $track->bikes->key;
+        
+        if ($track->save() == false) {
+            foreach ($track->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('tracks/');
+        }
+        
+        $query = $this->modelsManager->createQuery("UPDATE Routes SET track_id = :track_id: WHERE key = :key: AND date >= :datestart: AND date <= :dateend: ");
+        $result = $query->execute(array(
+            'key' => $key,
+            'datestart' => $track->datestart,
+            'dateend'   => $track->dateend,
+            'track_id'  => $track->id
+        ));
+        
+        if ($result->success() == false){
+            foreach ($result->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('tracks/');
+        }
+        
+        $this->flash->success("Track was finished successfully");
+		return $this->forward("tracks/");
+    }
+    
+    /**
+	 * Deletes track
+	 *
+	 * @param string $id
+	 */
+	public function deleteAction($id)
+	{   
+        $tracks = Tracks::findFirstById($id);
+        if (!$tracks) {
+            $this->flash->error("Track was not found");
+            return $this->forward("tracks/index");
+        }
+        
+        if (!$this->request->isPost()){
+            
+            $this->view->track = $tracks;
+            
+        }elseif($this->request->getPost('confirm') == 'Yes'){
+            
+            if (!$tracks->delete()) {
+                foreach ($users->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+                return $this->forward("tracks/index");
+            }
+
+            $this->flash->success("Track was deleted");
+            return $this->forward("tracks/index");
+        }else{
+            $this->flash->error("Error during delete track");
+            return $this->forward("tracks/index");
+        }
 	}
 
 }

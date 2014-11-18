@@ -18,6 +18,7 @@
             <th>Title</th>
             <th>Description</th>
             <th>Distance</th>
+            <th>Key</th>
             <th colspan="2">Action</th>
         </tr>
     </thead>
@@ -32,6 +33,7 @@
             <td>{{ bikes.title }}</td>
             <td>{{ bikes.description }}</td>
             <td>{{ bikes.distance }}</td>
+            <td>{{ bikes.key }}</td>
             <td width="7%">{{ link_to("bikes/edit/" ~ bikes.id, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
             <td width="7%">{{ link_to("bikes/delete/" ~ bikes.id, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-default") }}</td>
         </tr>

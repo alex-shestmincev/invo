@@ -55,19 +55,23 @@ class TracksEditForm extends Form
         $this->add($user);
         
         
-
-
-        $distance = new Numeric("distance");
-        $distance->setLabel("Distance");
-        $distance->setFilters(array('int'));
-        $distance->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'Distance is required'
-            )),
-//            new Numericality(array(
-//                'message' => 'Distance is required'
-//            ))
-        ));
-        $this->add($distance);
+        if (isset($options['edit'])) {
+            $distance = new Numeric("distance");
+            $distance->setLabel("Distance");
+            $distance->setFilters(array('int'));
+            $distance->addValidators(array(
+                new PresenceOf(array(
+                    'message' => 'Distance is required'
+                )),
+    //            new Numericality(array(
+    //                'message' => 'Distance is required'
+    //            ))
+            ));
+            $this->add($distance);
+        }else{
+            $distance = new Hidden("distance");
+            $distance->setDefault(0);
+            $this->add($distance);
+        }
     }
 }

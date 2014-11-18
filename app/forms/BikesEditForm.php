@@ -36,6 +36,16 @@ class BikesEditForm extends Form
         ));
         $this->add($name);
         
+        $key = new Text("key");
+        $key->setLabel("Key");
+        $key->setFilters(array('striptags', 'string'));
+        $key->addValidators(array(
+            new PresenceOf(array(
+                'message' => 'Key is required'
+            ))
+        ));
+        $this->add($key);
+        
         $description = new Text("description");
         $description->setLabel("Description");
         $description->setFilters(array('striptags', 'string'));

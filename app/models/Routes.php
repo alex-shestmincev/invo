@@ -1,6 +1,6 @@
 <?php
 
-class TrackRoutes extends \Phalcon\Mvc\Model
+class Routes extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -34,6 +34,13 @@ class TrackRoutes extends \Phalcon\Mvc\Model
     public $date;
 
     /**
+     *
+     * @var string
+     */
+    public $key;
+    
+
+    /**
      * Independent Column Mapping.
      */
     public function columnMap()
@@ -43,7 +50,8 @@ class TrackRoutes extends \Phalcon\Mvc\Model
             'track_id' => 'track_id', 
             'latitude' => 'latitude', 
             'longitude' => 'longitude', 
-            'date' => 'date'
+            'date' => 'date', 
+            'key' => 'key'
         );
     }
 
